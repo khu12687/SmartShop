@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>재고 관리 프로젝트</title>
+<!-- Bootstrap css-->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<!-- Bootstrap icon css-->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.0/font/bootstrap-icons.css">
+
+<link rel="stylesheet" href="/css/common.css">
+
+
+<!--JQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script src="../js/pager.js"></script>
+
+<script>
+	const pager_url = "/api/partner";
+	const pager_root = "#pager";
+	const pager_key = "code";
+</script>
+</head>
+<body class="container">
+	<div>
+		<h2 class="mt-3 mb-3">거래처 관리(<span id="total">0</span>)</h2>
+	</div>
+		<div id="search">
+			<div class="input-group mb-3">
+			<span class="col-auto">
+				<select class="form-select perPage">
+					<option value="5">5개씩</option>
+					<option value="10">10개씩</option>
+					<option value="20">20개씩</option>
+					<option value="30">30개씩</option>
+				</select>
+			</span>
+				<div class="col-6"></div>
+				<span class="col-auto">
+					<select class="form-select search">
+						<option value="0">전체</option>
+						<option value="1">거래처 코드</option>
+						<option value="2">거래처명</option>
+						<option value="3">주소</option>
+						<option value="4">전화번호</option>
+					</select>
+				</span>
+			<input class="form-control keyword" type="text" name="keyword" placeholder="검색어를 입력하세요">
+			<button class="btn btn-outline-secondary submit" type="button" id="button-addon2">검색</button>
+			</div>
+		</div>
+	<div class="table-responsive">
+		<table class="table table-hover" id="pager">
+			<thead>
+				<!--order: ORDER BY 쿼리문에 전달할 DB칼럼명 / name: 제이쿼리로 선택하기 위한 명칭-->
+				<tr class="table-dark col-auto">
+					<th><input type="checkbox"></th>
+					<th class="order" data-order="code" data-name="code">거래처 코드</th>
+					<th class="order" data-order="name" data-name="name">거래처명</th>
+					<th class="order" data-order="tel" data-name="tel">전화번호</th>
+					<th class="order" data-order="address" data-name="address">주소</th>
+					<th class="col-auto">관리</td>
+				</tr>
+			</thead>
+			<tbody>
+				<tr class="empty_msg">
+					<td colspan="7">등록된 제품이 없습니다</td>
+				</tr>
+			</tbody>
+			<tfoot>
+				<tr>
+					<td colspan="7">
+						<div class="pagination justify-content-center">
+							<div class="page-item">
+								<div class="page-link page-first" data-page=1>처음</div>
+							</div>
+							<div class="page-item">
+								<div class="page-link page-prev">이전</div>
+							</div>
+							<div class="page-item">
+								<div class="page-link page-next">다음</div>
+							</div>
+							<div class="page-item">
+								<div class="page-link page-last">마지막</div>
+							</div>
+						</div>
+					</td>
+				</tr>
+			</tfoot>
+		</table>
+	</div>
+	<div class="btn justify-content-right">
+		<a href="add" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addModal">등록</a>
+		<a href=".." class="btn btn-primary">이전 메뉴</a>
+	</div>
+	
+	<!-- [시작] 등록 Modal -->
+	<div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="addModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="addModalLabel">거래처 등록</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal"	aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<div class="mb-3">
+						<label class="form-label">이름</label>
+				 		<input type="text" class="name form-control">
+				 	</div>
+				 	<div class="mb-3">
+						<label class="form-label">전화번호</label>
+				 		<input type="text" class="tel form-control">
+				 	</div>
+				 	<div class="mb-3">
+						<label class="form-label">주소</label>
+				 		<input type="text" class="address form-control">
+				 	</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary"	data-bs-dismiss="modal">닫기</button>
+					<button type="button" class="btn btn-primary  add">등록</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- [끝] 등록 Modal -->
+	
+	<!-- [시작] 변경 Modal -->
+	<div class="modal fade" id="updateModal" tabindex="-1" aria-labelledby="updateModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="updateModalLabel">제품 정보 변경</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal"	aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<div class="mb-3">
+						<label class="form-label">코드</label>
+				 		<input type="text" class="code form-control" readonly>
+				 	</div>
+					<div class="mb-3">
+						<label class="form-label">거래처명</label>
+				 		<input type="text" class="name form-control">
+				 	</div>
+				 	<div class="mb-3">
+						<label class="form-label">전화번호</label>
+				 		<input type="text" class="tel form-control">
+				 	</div>
+				 	<div class="mb-3">
+						<label class="form-label">주소</label>
+				 		<input type="text" class="address form-control">
+				 	</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary"	data-bs-dismiss="modal">닫기</button>
+					<button type="button" class="btn btn-primary update">변경</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- [끝] 변경 Modal -->
+	<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js"></script>
+</body>
+</html>

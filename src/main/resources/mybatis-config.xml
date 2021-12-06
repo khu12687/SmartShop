@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+	<settings>
+		<setting name="mapUnderscoreToCamelCase" value="true"/>
+	</settings>
+	
+	<typeAliases>
+		<package name="kr.ac.kopo.smartshop.model"/>
+	</typeAliases>
+	
+	<mappers>
+		<mapper resource="mybatis/product.xml"/>
+		<mapper resource="mybatis/partner.xml"/>
+		<mapper resource="mybatis/purchase.xml"/>
+		<mapper resource="mybatis/sales.xml"/>
+		<mapper resource="mybatis/member.xml"/>
+		<mapper resource="mybatis/product_image.xml"/>
+	</mappers>
+</configuration>
